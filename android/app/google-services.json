@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "409489952952",
+    "project_id": "tomo-week-menu",
+    "storage_bucket": "tomo-week-menu.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:409489952952:android:04a0a39697b5ff3401644d",
+        "android_client_info": {
+          "package_name": "com.matteotomasini.menu"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "409489952952-gj2sqsth216eg8amse7427scuakdedfo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARawVyHOVl_IVMuhwD-zbxTaKOgesJXJk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "409489952952-gj2sqsth216eg8amse7427scuakdedfo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
