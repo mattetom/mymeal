@@ -1,15 +1,17 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:menu/authentication.dart';
 import 'package:menu/dayofweek.dart';
+import 'package:menu/main.dart';
+import 'package:provider/provider.dart';
 
 class WeekPage extends StatelessWidget {
   const WeekPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Consumer(builder: (_, WidgetRef ref, __) {
-      //final value = ref.watch(valueProvider);
-      return Scaffold(
+    return Consumer<ApplicationState>(
+      builder: (context, appState, child) => Scaffold(
         backgroundColor: Colors.grey[800],
         appBar: AppBar(
           leading: Icon(Icons.abc),
@@ -67,11 +69,18 @@ class WeekPage extends StatelessWidget {
                     dayOfWeek: 'Mercoledì',
                     lunch: 'Tagliatelle al ragu',
                     dinner: 'Toast con verdure fresche'),
+                Consumer<ApplicationState>(
+                  builder: (context, appState, _) => AuthFunc(
+                      loggedIn: appState.loggedIn,
+                      signOut: () {
+                        FirebaseAuth.instance.signOut();
+                      }),
+                ),
               ],
             ),
           ),
         ),
-      );
-    });
+      ),
+    );
   }
 }
