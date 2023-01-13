@@ -5,6 +5,14 @@ import 'package:menu/dayofweek.dart';
 import 'package:menu/main.dart';
 import 'package:provider/provider.dart';
 
+class DayOfWeek {
+  DayOfWeek(
+      {required this.dayOfWeek, required this.launch, required this.dinner});
+  final String dayOfWeek;
+  final String launch;
+  final String dinner;
+}
+
 class WeekPage extends StatelessWidget {
   const WeekPage({Key? key}) : super(key: key);
 
