@@ -13,9 +13,14 @@ class DayOfWeek {
   final String dinner;
 }
 
-class WeekPage extends StatelessWidget {
+class WeekPage extends StatefulWidget {
   const WeekPage({Key? key}) : super(key: key);
+  
+  @override
+  _WeekState createState() => _WeekState();
+}
 
+class _WeekState extends State<WeekPage> {
   @override
   Widget build(BuildContext context) {
     return Consumer<ApplicationState>(
@@ -52,31 +57,37 @@ class WeekPage extends StatelessWidget {
         body: Container(
           child: SingleChildScrollView(
             child: Column(
-              children: [
-                DayOfWeekPage(
-                    dayOfWeek: 'Lunedì',
-                    lunch: 'Tagliatelle al ragu',
-                    dinner: 'Toast con verdure fresche'),
-                DayOfWeekPage(
-                    dayOfWeek: 'Martedì',
-                    lunch: 'Tagliatelle al ragu',
-                    dinner: 'Toast con verdure fresche'),
-                DayOfWeekPage(
-                    dayOfWeek: 'Mercoledì',
-                    lunch: 'Tagliatelle al ragu',
-                    dinner: 'Toast con verdure fresche'),
-                DayOfWeekPage(
-                    dayOfWeek: 'Mercoledì',
-                    lunch: 'Tagliatelle al ragu',
-                    dinner: 'Toast con verdure fresche'),
-                DayOfWeekPage(
-                    dayOfWeek: 'Mercoledì',
-                    lunch: 'Tagliatelle al ragu',
-                    dinner: 'Toast con verdure fresche'),
-                DayOfWeekPage(
-                    dayOfWeek: 'Mercoledì',
-                    lunch: 'Tagliatelle al ragu',
-                    dinner: 'Toast con verdure fresche'),
+              children: 
+              [
+              //   DayOfWeekPage(
+              //       dayOfWeek: 'Lunedì',
+              //       lunch: 'Tagliatelle al ragu',
+              //       dinner: 'Toast con verdure fresche'),
+              //   DayOfWeekPage(
+              //       dayOfWeek: 'Martedì',
+              //       lunch: 'Tagliatelle al ragu',
+              //       dinner: 'Toast con verdure fresche'),
+              //   DayOfWeekPage(
+              //       dayOfWeek: 'Mercoledì',
+              //       lunch: 'Tagliatelle al ragu',
+              //       dinner: 'Toast con verdure fresche'),
+              //   DayOfWeekPage(
+              //       dayOfWeek: 'Mercoledì',
+              //       lunch: 'Tagliatelle al ragu',
+              //       dinner: 'Toast con verdure fresche'),
+              //   DayOfWeekPage(
+              //       dayOfWeek: 'Mercoledì',
+              //       lunch: 'Tagliatelle al ragu',
+              //       dinner: 'Toast con verdure fresche'),
+              //   DayOfWeekPage(
+              //       dayOfWeek: 'Mercoledì',
+              //       lunch: 'Tagliatelle al ragu',
+              //       dinner: 'Toast con verdure fresche'),
+                // appState.dayOfWeeks.map((e) => DayOfWeekPage(
+                //     dayOfWeek: 'Mercoledì',
+                //     lunch: 'Tagliatelle al ragu',
+                //     dinner: 'Toast con verdure fresche'),
+                // ).toList(),
                 Consumer<ApplicationState>(
                   builder: (context, appState, _) => AuthFunc(
                       loggedIn: appState.loggedIn,
@@ -91,4 +102,5 @@ class WeekPage extends StatelessWidget {
       ),
     );
   }
+
 }

@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart'
     hide EmailAuthProvider, PhoneAuthProvider;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
@@ -147,8 +148,27 @@ class ApplicationState extends ChangeNotifier {
     FirebaseAuth.instance.userChanges().listen((user) {
       if (user != null) {
         _loggedIn = true;
+        _dayOfWeekSubscription = FirebaseFirestore.instance
+            .collection('tomo-week-menu')
+            .orderBy('timestamp', descending: true)
+            .snapshots()
+            .listen((snapshot) {
+          _dayOfWeeks = [];
+          for (final document in snapshot.docs) {
+            _dayOfWeeks.add(
+              DayOfWeek(
+                dayOfWeek: document.data()['dayOfWeek'] as String,
+                launch: document.data()['launch'] as String,
+                dinner: document.data()['dinner'] as String,
+              ),
+            );
+          }
+          notifyListeners();
+        });
       } else {
         _loggedIn = false;
+        _dayOfWeeks = [];
+        _dayOfWeekSubscription?.cancel();
       }
       notifyListeners();
     });
