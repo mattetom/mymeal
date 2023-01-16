@@ -156,7 +156,7 @@ class ApplicationState extends ChangeNotifier {
           for (final document in snapshot.docs) {
             _dayOfWeeks.add(
               DayOfWeek(
-                dayOfWeek: document.data()['dayOfWeek'] as String,
+                day: document.data()['day'] as Timestamp,
                 launch: document.data()['launch'] as String,
                 dinner: document.data()['dinner'] as String,
               ),

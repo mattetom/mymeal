@@ -1,16 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class DayOfWeekPage extends StatelessWidget {
-  final String dayOfWeek;
+  final Timestamp day;
   final String lunch;
   final String dinner;
 
-  const DayOfWeekPage({
-    Key? key, 
-    required this.dayOfWeek, 
-    required this.lunch, 
-    required this.dinner}) : super(key: key);
+  const DayOfWeekPage(
+      {Key? key, required this.day, required this.lunch, required this.dinner})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,22 +25,21 @@ class DayOfWeekPage extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text(dayOfWeek, style: TextStyle(fontSize: 40),),
+                child: Text(
+                  DateFormat('EEEE').format(day.toDate()),
+                  style: TextStyle(fontSize: 40),
+                ),
               ),
               ListTile(
-                  //leading: Icon(Icons.no_meals),
-                  title: Text('PRANZO'),
-                  subtitle: Text(
-                    lunch
-                  ),
-                  trailing: Icon(Icons.edit, color: Colors.white),
+                //leading: Icon(Icons.no_meals),
+                title: Text('PRANZO'),
+                subtitle: Text(lunch),
+                trailing: Icon(Icons.edit, color: Colors.white),
               ),
               ListTile(
                 //leading: Icon(Icons.no_meals),
                 title: Text('CENA'),
-                subtitle: Text(
-                  dinner
-                ),
+                subtitle: Text(dinner),
                 trailing: Icon(Icons.edit, color: Colors.white),
               )
             ],
