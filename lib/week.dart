@@ -15,7 +15,7 @@ class DayOfWeek {
 
 class WeekPage extends StatefulWidget {
   const WeekPage({Key? key}) : super(key: key);
-  
+
   @override
   _WeekState createState() => _WeekState();
 }
@@ -57,37 +57,31 @@ class _WeekState extends State<WeekPage> {
         body: Container(
           child: SingleChildScrollView(
             child: Column(
-              children: 
-              [
-              //   DayOfWeekPage(
-              //       dayOfWeek: 'Lunedì',
-              //       lunch: 'Tagliatelle al ragu',
-              //       dinner: 'Toast con verdure fresche'),
-              //   DayOfWeekPage(
-              //       dayOfWeek: 'Martedì',
-              //       lunch: 'Tagliatelle al ragu',
-              //       dinner: 'Toast con verdure fresche'),
-              //   DayOfWeekPage(
-              //       dayOfWeek: 'Mercoledì',
-              //       lunch: 'Tagliatelle al ragu',
-              //       dinner: 'Toast con verdure fresche'),
-              //   DayOfWeekPage(
-              //       dayOfWeek: 'Mercoledì',
-              //       lunch: 'Tagliatelle al ragu',
-              //       dinner: 'Toast con verdure fresche'),
-              //   DayOfWeekPage(
-              //       dayOfWeek: 'Mercoledì',
-              //       lunch: 'Tagliatelle al ragu',
-              //       dinner: 'Toast con verdure fresche'),
-              //   DayOfWeekPage(
-              //       dayOfWeek: 'Mercoledì',
-              //       lunch: 'Tagliatelle al ragu',
-              //       dinner: 'Toast con verdure fresche'),
-                // appState.dayOfWeeks.map((e) => DayOfWeekPage(
-                //     dayOfWeek: 'Mercoledì',
-                //     lunch: 'Tagliatelle al ragu',
-                //     dinner: 'Toast con verdure fresche'),
-                // ).toList(),
+              children: [
+                //   DayOfWeekPage(
+                //       dayOfWeek: 'Lunedì',
+                //       lunch: 'Tagliatelle al ragu',
+                //       dinner: 'Toast con verdure fresche'),
+                //   DayOfWeekPage(
+                //       dayOfWeek: 'Martedì',
+                //       lunch: 'Tagliatelle al ragu',
+                //       dinner: 'Toast con verdure fresche'),
+                //   DayOfWeekPage(
+                //       dayOfWeek: 'Mercoledì',
+                //       lunch: 'Tagliatelle al ragu',
+                //       dinner: 'Toast con verdure fresche'),
+                //   DayOfWeekPage(
+                //       dayOfWeek: 'Mercoledì',
+                //       lunch: 'Tagliatelle al ragu',
+                //       dinner: 'Toast con verdure fresche'),
+                //   DayOfWeekPage(
+                //       dayOfWeek: 'Mercoledì',
+                //       lunch: 'Tagliatelle al ragu',
+                //       dinner: 'Toast con verdure fresche'),
+                //   DayOfWeekPage(
+                //       dayOfWeek: 'Mercoledì',
+                //       lunch: 'Tagliatelle al ragu',
+                //       dinner: 'Toast con verdure fresche'),
                 Consumer<ApplicationState>(
                   builder: (context, appState, _) => AuthFunc(
                       loggedIn: appState.loggedIn,
@@ -95,6 +89,14 @@ class _WeekState extends State<WeekPage> {
                         FirebaseAuth.instance.signOut();
                       }),
                 ),
+                ...appState.dayOfWeeks
+                    .map(
+                      (e) => DayOfWeekPage(
+                          dayOfWeek: e.dayOfWeek,
+                          lunch: e.launch,
+                          dinner: e.dinner),
+                    )
+                    .toList(),
               ],
             ),
           ),
@@ -102,5 +104,4 @@ class _WeekState extends State<WeekPage> {
       ),
     );
   }
-
 }

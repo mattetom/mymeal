@@ -149,8 +149,7 @@ class ApplicationState extends ChangeNotifier {
       if (user != null) {
         _loggedIn = true;
         _dayOfWeekSubscription = FirebaseFirestore.instance
-            .collection('tomo-week-menu')
-            .orderBy('timestamp', descending: true)
+            .collection('dayOfWeeks')
             .snapshots()
             .listen((snapshot) {
           _dayOfWeeks = [];
