@@ -58,30 +58,6 @@ class _WeekState extends State<WeekPage> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                //   DayOfWeekPage(
-                //       dayOfWeek: 'Lunedì',
-                //       lunch: 'Tagliatelle al ragu',
-                //       dinner: 'Toast con verdure fresche'),
-                //   DayOfWeekPage(
-                //       dayOfWeek: 'Martedì',
-                //       lunch: 'Tagliatelle al ragu',
-                //       dinner: 'Toast con verdure fresche'),
-                //   DayOfWeekPage(
-                //       dayOfWeek: 'Mercoledì',
-                //       lunch: 'Tagliatelle al ragu',
-                //       dinner: 'Toast con verdure fresche'),
-                //   DayOfWeekPage(
-                //       dayOfWeek: 'Mercoledì',
-                //       lunch: 'Tagliatelle al ragu',
-                //       dinner: 'Toast con verdure fresche'),
-                //   DayOfWeekPage(
-                //       dayOfWeek: 'Mercoledì',
-                //       lunch: 'Tagliatelle al ragu',
-                //       dinner: 'Toast con verdure fresche'),
-                //   DayOfWeekPage(
-                //       dayOfWeek: 'Mercoledì',
-                //       lunch: 'Tagliatelle al ragu',
-                //       dinner: 'Toast con verdure fresche'),
                 Consumer<ApplicationState>(
                   builder: (context, appState, _) => AuthFunc(
                       loggedIn: appState.loggedIn,
@@ -92,7 +68,7 @@ class _WeekState extends State<WeekPage> {
                 ...appState.dayOfWeeks
                     .map(
                       (e) => DayOfWeekPage(
-                          day: e.day, lunch: e.launch, dinner: e.dinner),
+                          day: e.day, launch: e.launch, dinner: e.dinner),
                     )
                     .toList(),
               ],
