@@ -44,7 +44,6 @@ class DayOfWeekPage extends StatelessWidget {
                         value: launch,
                       ),
                     );
-                    log(value);
                   },
                 ),
               ),
