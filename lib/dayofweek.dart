@@ -1,16 +1,17 @@
+import 'dart:developer';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 
 class DayOfWeekPage extends StatelessWidget {
-  final String dayOfWeek;
-  final String lunch;
+  final Timestamp day;
+  final String launch;
   final String dinner;
 
-  const DayOfWeekPage({
-    Key? key, 
-    required this.dayOfWeek, 
-    required this.lunch, 
-    required this.dinner}) : super(key: key);
+  const DayOfWeekPage(
+      {Key? key, required this.day, required this.launch, required this.dinner})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,28 +26,93 @@ class DayOfWeekPage extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text(dayOfWeek, style: TextStyle(fontSize: 40),),
+                child: Text(
+                  day.toDate().toString(),
+                  style: TextStyle(fontSize: 40),
+                ),
               ),
               ListTile(
-                  //leading: Icon(Icons.no_meals),
-                  title: Text('PRANZO'),
-                  subtitle: Text(
-                    lunch
-                  ),
-                  trailing: Icon(Icons.edit, color: Colors.white),
+                //leading: Icon(Icons.no_meals),
+                title: Text('PRANZO'),
+                subtitle: Text(launch),
+                trailing: IconButton(
+                  icon: Icon(Icons.edit),
+                  color: Colors.white,
+                  onPressed: () async {
+                    String value = await showDialog(
+                      context: context,
+                      builder: (context) => Dialog(
+                        value: launch,
+                      ),
+                    );
+                    log(value);
+                  },
+                ),
               ),
               ListTile(
                 //leading: Icon(Icons.no_meals),
                 title: Text('CENA'),
-                subtitle: Text(
-                  dinner
-                ),
+                subtitle: Text(dinner),
                 trailing: Icon(Icons.edit, color: Colors.white),
               )
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class Dialog extends StatefulWidget {
+  @override
+  _DialogState createState() => _DialogState();
+
+  final String value;
+
+  Dialog({
+    required this.value,
+  });
+}
+
+class _DialogState extends State<Dialog> {
+  final _formKey = GlobalKey<FormState>(debugLabel: '_LaunchDialog');
+  final _controller = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Form(
+        key: _formKey,
+        child: TextFormField(
+          controller: _controller,
+          decoration: const InputDecoration(
+            hintText: 'Inserisci un piatto',
+          ),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Enter a value to continue';
+            }
+            return null;
+          },
+        ),
+      ),
+      actions: [
+        ElevatedButton(
+            onPressed: () => Navigator.pop(context), child: Text('cancel')),
+        ElevatedButton(
+            onPressed: () {
+              if (_formKey.currentState!.validate()) {
+                _controller.clear();
+                Navigator.pop(context, _controller.text);
+              }
+            },
+            child: Text('confirm')),
+      ],
     );
   }
 }

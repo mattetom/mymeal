@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:menu/authentication.dart';
@@ -7,8 +8,8 @@ import 'package:provider/provider.dart';
 
 class DayOfWeek {
   DayOfWeek(
-      {required this.dayOfWeek, required this.launch, required this.dinner});
-  final String dayOfWeek;
+      {required this.day, required this.launch, required this.dinner});
+  final Timestamp day;
   final String launch;
   final String dinner;
 }
@@ -58,30 +59,6 @@ class _WeekState extends State<WeekPage> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                //   DayOfWeekPage(
-                //       dayOfWeek: 'Lunedì',
-                //       lunch: 'Tagliatelle al ragu',
-                //       dinner: 'Toast con verdure fresche'),
-                //   DayOfWeekPage(
-                //       dayOfWeek: 'Martedì',
-                //       lunch: 'Tagliatelle al ragu',
-                //       dinner: 'Toast con verdure fresche'),
-                //   DayOfWeekPage(
-                //       dayOfWeek: 'Mercoledì',
-                //       lunch: 'Tagliatelle al ragu',
-                //       dinner: 'Toast con verdure fresche'),
-                //   DayOfWeekPage(
-                //       dayOfWeek: 'Mercoledì',
-                //       lunch: 'Tagliatelle al ragu',
-                //       dinner: 'Toast con verdure fresche'),
-                //   DayOfWeekPage(
-                //       dayOfWeek: 'Mercoledì',
-                //       lunch: 'Tagliatelle al ragu',
-                //       dinner: 'Toast con verdure fresche'),
-                //   DayOfWeekPage(
-                //       dayOfWeek: 'Mercoledì',
-                //       lunch: 'Tagliatelle al ragu',
-                //       dinner: 'Toast con verdure fresche'),
                 Consumer<ApplicationState>(
                   builder: (context, appState, _) => AuthFunc(
                       loggedIn: appState.loggedIn,
@@ -92,8 +69,8 @@ class _WeekState extends State<WeekPage> {
                 ...appState.dayOfWeeks
                     .map(
                       (e) => DayOfWeekPage(
-                          dayOfWeek: e.dayOfWeek,
-                          lunch: e.launch,
+                          day: e.day,
+                          launch: e.launch,
                           dinner: e.dinner),
                     )
                     .toList(),
