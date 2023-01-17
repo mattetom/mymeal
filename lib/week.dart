@@ -7,7 +7,12 @@ import 'package:menu/main.dart';
 import 'package:provider/provider.dart';
 
 class DayOfWeek {
-  DayOfWeek({required this.day, required this.launch, required this.dinner});
+  DayOfWeek(
+      {required this.itemID,
+      required this.day,
+      required this.launch,
+      required this.dinner});
+  final String itemID;
   final Timestamp day;
   final String launch;
   final String dinner;
@@ -68,7 +73,10 @@ class _WeekState extends State<WeekPage> {
                 ...appState.dayOfWeeks
                     .map(
                       (e) => DayOfWeekPage(
-                          day: e.day, launch: e.launch, dinner: e.dinner),
+                          itemID: e.itemID,
+                          day: e.day,
+                          launch: e.launch,
+                          dinner: e.dinner),
                     )
                     .toList(),
               ],

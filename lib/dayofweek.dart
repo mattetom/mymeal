@@ -1,15 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 class DayOfWeekPage extends StatelessWidget {
+  final String itemID;
   final Timestamp day;
   final String launch;
   final String dinner;
 
   const DayOfWeekPage(
-      {Key? key, required this.day, required this.launch, required this.dinner})
+      {Key? key,
+      required this.itemID,
+      required this.day,
+      required this.launch,
+      required this.dinner})
       : super(key: key);
 
   @override
@@ -34,84 +40,29 @@ class DayOfWeekPage extends StatelessWidget {
                 //leading: Icon(Icons.no_meals),
                 title: Text('PRANZO'),
                 subtitle: Text(launch),
-                trailing: IconButton(
-                  icon: Icon(Icons.edit),
-                  color: Colors.white,
-                  onPressed: () async {
-                    String value = await showDialog(
-                      context: context,
-                      builder: (context) => Dialog(
-                        value: launch,
-                      ),
-                    );
-                  },
-                ),
               ),
               ListTile(
                 //leading: Icon(Icons.no_meals),
                 title: Text('CENA'),
                 subtitle: Text(dinner),
-                trailing: Icon(Icons.edit, color: Colors.white),
-              )
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  const SizedBox(width: 8),
+                  TextButton(
+                    child: const Text('EDIT'),
+                    onPressed: () {
+                      context.go('/details/' + itemID);
+                    },
+                  ),
+                  const SizedBox(width: 8),
+                ],
+              ),
             ],
           ),
         ),
       ),
-    );
-  }
-}
-
-class Dialog extends StatefulWidget {
-  @override
-  _DialogState createState() => _DialogState();
-
-  final String value;
-
-  Dialog({
-    required this.value,
-  });
-}
-
-class _DialogState extends State<Dialog> {
-  final _formKey = GlobalKey<FormState>(debugLabel: '_LaunchDialog');
-  final _controller = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    _controller.text = widget.value;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Form(
-        key: _formKey,
-        child: TextFormField(
-          controller: _controller,
-          decoration: const InputDecoration(
-            hintText: 'Inserisci un piatto',
-          ),
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Enter a value to continue';
-            }
-            return null;
-          },
-        ),
-      ),
-      actions: [
-        ElevatedButton(
-            onPressed: () => Navigator.pop(context), child: Text('cancel')),
-        ElevatedButton(
-            onPressed: () {
-              if (_formKey.currentState!.validate()) {
-                _controller.clear();
-                Navigator.pop(context, _controller.text);
-              }
-            },
-            child: Text('confirm')),
-      ],
     );
   }
 }

@@ -7,6 +7,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:go_router/go_router.dart';
+import 'package:menu/dayofweek_details.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
@@ -94,6 +95,12 @@ final _router = GoRouter(
             );
           },
         ),
+        GoRoute(
+          path: 'details/:itemID',
+          builder: (context, state) {
+            return DayOfWeekDetailsPage(itemId: state.params["itemID"]!);
+          },
+        ),
       ],
     ),
   ],
@@ -156,6 +163,7 @@ class ApplicationState extends ChangeNotifier {
           for (final document in snapshot.docs) {
             _dayOfWeeks.add(
               DayOfWeek(
+                itemID: document.id,
                 day: document.data()['day'] as Timestamp,
                 launch: document.data()['launch'] as String,
                 dinner: document.data()['dinner'] as String,
