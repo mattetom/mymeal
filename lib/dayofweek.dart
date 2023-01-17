@@ -81,6 +81,7 @@ class _DialogState extends State<Dialog> {
   @override
   void initState() {
     super.initState();
+    _controller.text = widget.value;
   }
 
   @override
