@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:menu/widgets.dart';
 
 class DayOfWeekPage extends StatelessWidget {
-  final String itemID;
+  final String? itemID;
   final Timestamp? day;
   final String? launch;
   final String? dinner;
@@ -56,7 +56,7 @@ class DayOfWeekPage extends StatelessWidget {
                   StyledButton(
                     child: const Text('EDIT'),
                     onPressed: () {
-                      context.push('/details/' + itemID);
+                      context.push('/details/' + itemID!);
                     },
                   ),
                   const SizedBox(width: 8),

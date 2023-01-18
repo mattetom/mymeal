@@ -48,7 +48,13 @@ class _DayOfWeekDetailsPageState extends State<DayOfWeekDetailsPage> {
               } else {
                 // var doc = snapshot.data?.data();
                 var dayOfWeek = appState.dayOfWeeks
-                    .firstWhere((element) => element.itemID == widget.itemId);
+                        .any((element) => element.itemID == widget.itemId)
+                    ? appState.dayOfWeeks.firstWhere(
+                        (element) => element.itemID == widget.itemId)
+                    : DayOfWeek(
+                        day: Timestamp.fromDate(appState.dayOfWeeks.last.day!
+                            .toDate()
+                            .add(const Duration(days: 1))));
                 _controllerLaunch.text = dayOfWeek.launch ?? "";
                 _controllerDinner.text = dayOfWeek.dinner ?? "";
                 return Form(

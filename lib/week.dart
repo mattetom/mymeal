@@ -9,13 +9,9 @@ import 'package:menu/widgets.dart';
 import 'package:provider/provider.dart';
 
 class DayOfWeek {
-  DayOfWeek(
-      {required this.itemID,
-      required this.day,
-      required this.launch,
-      required this.dinner});
-  final String itemID;
-  final Timestamp? day;
+  DayOfWeek({this.itemID, required this.day, this.launch, this.dinner});
+  String? itemID;
+  Timestamp? day;
   String? launch;
   String? dinner;
 
