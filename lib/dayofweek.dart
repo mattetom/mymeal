@@ -53,7 +53,7 @@ class DayOfWeekPage extends StatelessWidget {
                   TextButton(
                     child: const Text('EDIT'),
                     onPressed: () {
-                      context.go('/details/' + itemID);
+                      context.push('/details/' + itemID);
                     },
                   ),
                   const SizedBox(width: 8),

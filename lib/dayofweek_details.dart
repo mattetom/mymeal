@@ -25,7 +25,7 @@ class _DayOfWeekDetailsPageState extends State<DayOfWeekDetailsPage> {
     return Scaffold(
       backgroundColor: Colors.grey[800],
       appBar: AppBar(
-        leading: const Icon(Icons.abc),
+        leading: IconButton(onPressed: () => context.pop(), icon: const Icon(Icons.arrow_back_ios_new)),
         title: const Text("Details"),
         backgroundColor: Colors.grey[800],
       ),
