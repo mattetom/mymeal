@@ -98,7 +98,13 @@ final _router = GoRouter(
         GoRoute(
           path: 'details/:itemID',
           builder: (context, state) {
-            return DayOfWeekDetailsPage(itemId: state.params["itemID"]!);
+            return DayOfWeekDetailsPage(itemId: state.params["itemID"]);
+          },
+        ),
+        GoRoute(
+          path: 'details',
+          builder: (context, state) {
+            return DayOfWeekDetailsPage();
           },
         ),
       ],
@@ -157,6 +163,7 @@ class ApplicationState extends ChangeNotifier {
         _loggedIn = true;
         _dayOfWeekSubscription = FirebaseFirestore.instance
             .collection('dayOfWeeks')
+            .orderBy('day', descending: false)
             .snapshots()
             .listen((snapshot) {
           _dayOfWeeks = [];

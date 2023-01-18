@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:menu/authentication.dart';
 import 'package:menu/dayofweek.dart';
 import 'package:menu/main.dart';
+import 'package:menu/widgets.dart';
 import 'package:provider/provider.dart';
 
 class DayOfWeek {
@@ -13,9 +15,9 @@ class DayOfWeek {
       required this.launch,
       required this.dinner});
   final String itemID;
-  final Timestamp day;
-  String launch;
-  String dinner;
+  final Timestamp? day;
+  String? launch;
+  String? dinner;
 
   Map<String, Object?> toMap() {
     return {"day": day, "launch": launch, "dinner": dinner};
@@ -67,13 +69,11 @@ class _WeekState extends State<WeekPage> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Consumer<ApplicationState>(
-                  builder: (context, appState, _) => AuthFunc(
-                      loggedIn: appState.loggedIn,
-                      signOut: () {
-                        FirebaseAuth.instance.signOut();
-                      }),
-                ),
+                AuthFunc(
+                    loggedIn: appState.loggedIn,
+                    signOut: () {
+                      FirebaseAuth.instance.signOut();
+                    }),
                 ...appState.dayOfWeeks
                     .map(
                       (e) => DayOfWeekPage(
@@ -83,6 +83,9 @@ class _WeekState extends State<WeekPage> {
                           dinner: e.dinner),
                     )
                     .toList(),
+                StyledButton(
+                    child: Text("AGGIUNGI GIORNO"),
+                    onPressed: () => {context.push('/details/')}),
               ],
             ),
           ),

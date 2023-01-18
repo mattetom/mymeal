@@ -6,9 +6,9 @@ import 'package:intl/intl.dart';
 
 class DayOfWeekPage extends StatelessWidget {
   final String itemID;
-  final Timestamp day;
-  final String launch;
-  final String dinner;
+  final Timestamp? day;
+  final String? launch;
+  final String? dinner;
 
   const DayOfWeekPage(
       {Key? key,
@@ -32,19 +32,19 @@ class DayOfWeekPage extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  DateFormat('EEEE').format(day.toDate()),
+                  (day != null) ? DateFormat('EEEE').format(day!.toDate()) : "",
                   style: TextStyle(fontSize: 40),
                 ),
               ),
               ListTile(
                 //leading: Icon(Icons.no_meals),
                 title: Text('PRANZO'),
-                subtitle: Text(launch),
+                subtitle: Text(launch ?? ""),
               ),
               ListTile(
                 //leading: Icon(Icons.no_meals),
                 title: Text('CENA'),
-                subtitle: Text(dinner),
+                subtitle: Text(dinner ?? ""),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
