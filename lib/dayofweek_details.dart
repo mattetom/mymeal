@@ -17,14 +17,15 @@ class DayOfWeekDetailsPage extends StatefulWidget {
 class _DayOfWeekDetailsPageState extends State<DayOfWeekDetailsPage> {
   final _formKey =
       GlobalKey<FormState>(debugLabel: '_DayOfWeekDetailsPageState');
-  final _controller = TextEditingController();
+  final _controllerLaunch = TextEditingController();
+  final _controllerDinner = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[800],
       appBar: AppBar(
-        leading: Icon(Icons.abc),
+        leading: const Icon(Icons.abc),
         title: const Text("Details"),
         backgroundColor: Colors.grey[800],
       ),
@@ -37,37 +38,50 @@ class _DayOfWeekDetailsPageState extends State<DayOfWeekDetailsPage> {
               .snapshots(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
-              return new Text("Loading");
+              return const Text("Loading");
             } else {
               var doc = snapshot.data!.data();
               var dayOfWeek = DayOfWeek(itemID: snapshot.data!.id, day: doc!["day"], launch: doc["launch"], dinner: doc["dinner"]);
-              _controller.text = dayOfWeek.launch;
+              _controllerLaunch.text = dayOfWeek.launch;
+              _controllerDinner.text = dayOfWeek.dinner;
               return Form(
                 key: _formKey,
-                child: Row(
+                child: Column(
                   children: [
-                    Expanded(
-                      child: TextFormField(
-                        controller: _controller,
-                        decoration: const InputDecoration(
-                          hintText: 'Menu del pranzo',
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Inserisci il menu per continuare';
-                          }
-                          return null;
-                        },
+                    TextFormField(
+                      controller: _controllerLaunch,
+                      decoration: const InputDecoration(
+                        hintText: 'Menu del pranzo',
                       ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Inserisci il menu per continuare';
+                        }
+                        return null;
+                      },
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      controller: _controllerDinner,
+                      decoration: const InputDecoration(
+                        hintText: 'Menu della cena',
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Inserisci il menu per continuare';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 20),
                     StyledButton(
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
-                          dayOfWeek.launch = _controller.text;
+                          dayOfWeek.launch = _controllerLaunch.text;
+                          dayOfWeek.dinner= _controllerDinner.text;
                           FirebaseFirestore.instance.collection("dayOfWeeks").doc(widget.itemId).update(
                               dayOfWeek.toMap());
-                          _controller.clear();
+                          _controllerLaunch.clear();
                           context.pop();
                         }
                       },
@@ -75,7 +89,7 @@ class _DayOfWeekDetailsPageState extends State<DayOfWeekDetailsPage> {
                         children: const [
                           Icon(Icons.send),
                           SizedBox(width: 4),
-                          Text('SEND'),
+                          Text('AGGIORNA'),
                         ],
                       ),
                     ),
