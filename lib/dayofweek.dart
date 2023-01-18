@@ -32,7 +32,9 @@ class DayOfWeekPage extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  (day != null) ? DateFormat('EEEE').format(day!.toDate()) : "",
+                  (day != null)
+                      ? DateFormat('EEEE DD-MM').format(day!.toDate())
+                      : "",
                   style: TextStyle(fontSize: 40),
                 ),
               ),

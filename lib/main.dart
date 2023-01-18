@@ -120,12 +120,12 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       title: 'Firebase Meetup',
-      theme: ThemeData(
-        buttonTheme: Theme.of(context).buttonTheme.copyWith(
-              highlightColor: Colors.deepPurple,
-            ),
+      theme: ThemeData.from(colorScheme: ColorScheme.dark()).copyWith(
+        buttonTheme: Theme.of(context)
+            .buttonTheme
+            .copyWith(highlightColor: Colors.deepPurple),
         visualDensity: VisualDensity.adaptivePlatformDensity,
-        primarySwatch: Colors.blue,
+        primaryColor: Colors.blue,
         textTheme:
             GoogleFonts.frederickaTheGreatTextTheme(Theme.of(context).textTheme)
                 .apply(

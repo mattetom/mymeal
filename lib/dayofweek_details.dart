@@ -61,7 +61,8 @@ class _DayOfWeekDetailsPageState extends State<DayOfWeekDetailsPage> {
                   key: _formKey,
                   child: Column(
                     children: [
-                      Text(DateFormat('EEEE').format(dayOfWeek.day!.toDate())),
+                      Text(DateFormat('EEEE DD-MM')
+                          .format(dayOfWeek.day!.toDate())),
                       TextFormField(
                         controller: _controllerLaunch,
                         decoration: const InputDecoration(
