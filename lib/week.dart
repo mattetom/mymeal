@@ -14,8 +14,12 @@ class DayOfWeek {
       required this.dinner});
   final String itemID;
   final Timestamp day;
-  final String launch;
-  final String dinner;
+  String launch;
+  String dinner;
+
+  Map<String, Object?> toMap() {
+    return {"day": day, "launch": launch, "dinner": dinner};
+  }
 }
 
 class WeekPage extends StatefulWidget {
