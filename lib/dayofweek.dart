@@ -3,6 +3,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:menu/widgets.dart';
 
 class DayOfWeekPage extends StatelessWidget {
   final String itemID;
@@ -52,7 +53,7 @@ class DayOfWeekPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
                   const SizedBox(width: 8),
-                  TextButton(
+                  StyledButton(
                     child: const Text('EDIT'),
                     onPressed: () {
                       context.push('/details/' + itemID);

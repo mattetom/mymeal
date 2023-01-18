@@ -123,9 +123,8 @@ class App extends StatelessWidget {
       theme: ThemeData.from(colorScheme: ColorScheme.dark()).copyWith(
         buttonTheme: Theme.of(context)
             .buttonTheme
-            .copyWith(highlightColor: Colors.deepPurple),
+            .copyWith(highlightColor: Colors.white),
         visualDensity: VisualDensity.adaptivePlatformDensity,
-        primaryColor: Colors.blue,
         textTheme:
             GoogleFonts.frederickaTheGreatTextTheme(Theme.of(context).textTheme)
                 .apply(
