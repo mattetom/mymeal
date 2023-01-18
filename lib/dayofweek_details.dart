@@ -46,26 +46,25 @@ class _DayOfWeekDetailsPageState extends State<DayOfWeekDetailsPage> {
               if (!snapshot.hasData) {
                 return const Text("Loading");
               } else {
-                var doc = snapshot.data?.data();
-                var dayOfWeek = DayOfWeek(
-                    itemID: snapshot.data!.id,
-                    day: doc?["day"] ??
-                        Timestamp.fromDate(appState.dayOfWeeks.last.day!
-                            .toDate()
-                            .add(Duration(days: 1))),
-                    launch: doc?["launch"],
-                    dinner: doc?["dinner"]);
+                // var doc = snapshot.data?.data();
+                var dayOfWeek = appState.dayOfWeeks
+                    .firstWhere((element) => element.itemID == widget.itemId);
                 _controllerLaunch.text = dayOfWeek.launch ?? "";
                 _controllerDinner.text = dayOfWeek.dinner ?? "";
                 return Form(
                   key: _formKey,
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        DateFormat('EEEE DD-MM')
-                            .format(dayOfWeek.day!.toDate()),
-                        style: TextStyle(fontSize: 40),
+                      Center(
+                        child: Text(
+                          DateFormat('EEEE DD-MM')
+                              .format(dayOfWeek.day!.toDate()),
+                          style: const TextStyle(fontSize: 40),
+                        ),
                       ),
+                      const SizedBox(height: 40),
+                      const Text("PRANZO"),
                       TextFormField(
                         controller: _controllerLaunch,
                         decoration: const InputDecoration(
@@ -79,6 +78,7 @@ class _DayOfWeekDetailsPageState extends State<DayOfWeekDetailsPage> {
                         },
                       ),
                       const SizedBox(height: 20),
+                      const Text("CENA"),
                       TextFormField(
                         controller: _controllerDinner,
                         decoration: const InputDecoration(
@@ -91,26 +91,22 @@ class _DayOfWeekDetailsPageState extends State<DayOfWeekDetailsPage> {
                           return null;
                         },
                       ),
-                      const SizedBox(height: 20),
-                      StyledButton(
-                        onPressed: () async {
-                          if (_formKey.currentState!.validate()) {
-                            dayOfWeek.launch = _controllerLaunch.text;
-                            dayOfWeek.dinner = _controllerDinner.text;
-                            FirebaseFirestore.instance
-                                .collection("dayOfWeeks")
-                                .doc(widget.itemId)
-                                .set(dayOfWeek.toMap());
-                            _controllerLaunch.clear();
-                            context.pop();
-                          }
-                        },
-                        child: Row(
-                          children: const [
-                            Icon(Icons.send),
-                            SizedBox(width: 4),
-                            Text('AGGIORNA'),
-                          ],
+                      const SizedBox(height: 40),
+                      Center(
+                        child: StyledButton(
+                          onPressed: () async {
+                            if (_formKey.currentState!.validate()) {
+                              dayOfWeek.launch = _controllerLaunch.text;
+                              dayOfWeek.dinner = _controllerDinner.text;
+                              FirebaseFirestore.instance
+                                  .collection("dayOfWeeks")
+                                  .doc(widget.itemId)
+                                  .set(dayOfWeek.toMap());
+                              _controllerLaunch.clear();
+                              context.pop();
+                            }
+                          },
+                          child: const Text('AGGIORNA'),
                         ),
                       ),
                     ],
