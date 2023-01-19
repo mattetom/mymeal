@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:menu/main.dart';
@@ -52,9 +51,11 @@ class _DayOfWeekDetailsPageState extends State<DayOfWeekDetailsPage> {
                     ? appState.dayOfWeeks.firstWhere(
                         (element) => element.itemID == widget.itemId)
                     : DayOfWeek(
-                        day: appState.dayOfWeeks.isNotEmpty ? Timestamp.fromDate(appState.dayOfWeeks.last.day!
-                            .toDate()
-                            .add(const Duration(days: 1))): Timestamp.now());
+                        day: appState.dayOfWeeks.isNotEmpty
+                            ? Timestamp.fromDate(appState.dayOfWeeks.last.day!
+                                .toDate()
+                                .add(const Duration(days: 1)))
+                            : Timestamp.now());
                 _controllerLaunch.text = dayOfWeek.launch ?? "";
                 _controllerDinner.text = dayOfWeek.dinner ?? "";
                 return Form(

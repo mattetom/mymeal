@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -36,17 +35,17 @@ class DayOfWeekPage extends StatelessWidget {
                   (day != null)
                       ? DateFormat('EEEE DD-MM').format(day!.toDate())
                       : "",
-                  style: TextStyle(fontSize: 40),
+                  style: const TextStyle(fontSize: 40),
                 ),
               ),
               ListTile(
                 //leading: Icon(Icons.no_meals),
-                title: Text('PRANZO'),
+                title: const Text('PRANZO'),
                 subtitle: Text(launch ?? ""),
               ),
               ListTile(
                 //leading: Icon(Icons.no_meals),
-                title: Text('CENA'),
+                title: const Text('CENA'),
                 subtitle: Text(dinner ?? ""),
               ),
               Row(
@@ -56,7 +55,7 @@ class DayOfWeekPage extends StatelessWidget {
                   StyledButton(
                     child: const Text('EDIT'),
                     onPressed: () {
-                      context.push('/details/' + itemID!);
+                      context.push('/details/${itemID!}');
                     },
                   ),
                   const SizedBox(width: 8),

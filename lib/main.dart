@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart'
     hide EmailAuthProvider, PhoneAuthProvider;
 import 'package:firebase_core/firebase_core.dart';
@@ -55,6 +54,9 @@ final _router = GoRouter(
                     }
                     if (state is UserCreated) {
                       user.updateDisplayName(user.email!.split('@')[0]);
+                      // FirebaseFirestore.instance
+                      //     .collection('dayOfWeeks')
+                      //     .add();
                     }
                     if (!user.emailVerified) {
                       user.sendEmailVerification();
@@ -120,7 +122,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       title: 'Menu',
-      theme: ThemeData.from(colorScheme: ColorScheme.dark()).copyWith(
+      theme: ThemeData.from(colorScheme: const ColorScheme.dark()).copyWith(
         buttonTheme: Theme.of(context)
             .buttonTheme
             .copyWith(highlightColor: Colors.white),

@@ -24,7 +24,7 @@ class WeekPage extends StatefulWidget {
   const WeekPage({Key? key}) : super(key: key);
 
   @override
-  _WeekState createState() => _WeekState();
+  State<WeekPage> createState() => _WeekState();
 }
 
 class _WeekState extends State<WeekPage> {
@@ -34,7 +34,7 @@ class _WeekState extends State<WeekPage> {
       builder: (context, appState, child) => Scaffold(
         backgroundColor: Colors.grey[800],
         appBar: AppBar(
-          leading: Icon(Icons.abc),
+          leading: const Icon(Icons.abc),
           title: const Text('My Meal'),
           backgroundColor: Colors.grey[800],
         ),
@@ -61,29 +61,27 @@ class _WeekState extends State<WeekPage> {
           showUnselectedLabels: false,
           //onTap: ()
         ),
-        body: Container(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                AuthFunc(
-                    loggedIn: appState.loggedIn && !appState.isAnonymous,
-                    signOut: () {
-                      FirebaseAuth.instance.signOut();
-                    }),
-                ...appState.dayOfWeeks
-                    .map(
-                      (e) => DayOfWeekPage(
-                          itemID: e.itemID,
-                          day: e.day,
-                          launch: e.launch,
-                          dinner: e.dinner),
-                    )
-                    .toList(),
-                StyledButton(
-                    child: Text("AGGIUNGI GIORNO"),
-                    onPressed: () => {context.push('/details/')}),
-              ],
-            ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              AuthFunc(
+                  loggedIn: appState.loggedIn && !appState.isAnonymous,
+                  signOut: () {
+                    FirebaseAuth.instance.signOut();
+                  }),
+              ...appState.dayOfWeeks
+                  .map(
+                    (e) => DayOfWeekPage(
+                        itemID: e.itemID,
+                        day: e.day,
+                        launch: e.launch,
+                        dinner: e.dinner),
+                  )
+                  .toList(),
+              StyledButton(
+                  child: const Text("AGGIUNGI GIORNO"),
+                  onPressed: () => {context.push('/details/')}),
+            ],
           ),
         ),
       ),
