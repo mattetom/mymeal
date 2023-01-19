@@ -104,7 +104,7 @@ final _router = GoRouter(
         GoRoute(
           path: 'details',
           builder: (context, state) {
-            return DayOfWeekDetailsPage();
+            return const DayOfWeekDetailsPage();
           },
         ),
       ],
@@ -119,7 +119,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      title: 'Firebase Meetup',
+      title: 'Menu',
       theme: ThemeData.from(colorScheme: ColorScheme.dark()).copyWith(
         buttonTheme: Theme.of(context)
             .buttonTheme
@@ -143,7 +143,9 @@ class ApplicationState extends ChangeNotifier {
   }
 
   bool _loggedIn = false;
+  bool _isAnonymous = false;
   bool get loggedIn => _loggedIn;
+  bool get isAnonymous => _isAnonymous;
 
   StreamSubscription<QuerySnapshot>? _dayOfWeekSubscription;
   List<DayOfWeek> _dayOfWeeks = [];
@@ -157,9 +159,10 @@ class ApplicationState extends ChangeNotifier {
       EmailAuthProvider(),
     ]);
 
-    FirebaseAuth.instance.userChanges().listen((user) {
+    FirebaseAuth.instance.userChanges().listen((user) async {
       if (user != null) {
         _loggedIn = true;
+        _isAnonymous = user.isAnonymous;
         _dayOfWeekSubscription = FirebaseFirestore.instance
             .collection('dayOfWeeks')
             .orderBy('day', descending: false)
@@ -182,6 +185,7 @@ class ApplicationState extends ChangeNotifier {
         _loggedIn = false;
         _dayOfWeeks = [];
         _dayOfWeekSubscription?.cancel();
+        await FirebaseAuth.instance.signInAnonymously();
       }
       notifyListeners();
     });

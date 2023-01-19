@@ -52,9 +52,9 @@ class _DayOfWeekDetailsPageState extends State<DayOfWeekDetailsPage> {
                     ? appState.dayOfWeeks.firstWhere(
                         (element) => element.itemID == widget.itemId)
                     : DayOfWeek(
-                        day: Timestamp.fromDate(appState.dayOfWeeks.last.day!
+                        day: appState.dayOfWeeks.isNotEmpty ? Timestamp.fromDate(appState.dayOfWeeks.last.day!
                             .toDate()
-                            .add(const Duration(days: 1))));
+                            .add(const Duration(days: 1))): Timestamp.now());
                 _controllerLaunch.text = dayOfWeek.launch ?? "";
                 _controllerDinner.text = dayOfWeek.dinner ?? "";
                 return Form(

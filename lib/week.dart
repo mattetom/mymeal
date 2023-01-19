@@ -66,7 +66,7 @@ class _WeekState extends State<WeekPage> {
             child: Column(
               children: [
                 AuthFunc(
-                    loggedIn: appState.loggedIn,
+                    loggedIn: appState.loggedIn && !appState.isAnonymous,
                     signOut: () {
                       FirebaseAuth.instance.signOut();
                     }),
