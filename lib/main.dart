@@ -54,9 +54,9 @@ final _router = GoRouter(
                     }
                     if (state is UserCreated) {
                       user.updateDisplayName(user.email!.split('@')[0]);
-                      // FirebaseFirestore.instance
-                      //     .collection('dayOfWeeks')
-                      //     .add();
+                      FirebaseFirestore.instance
+                          .collection('families')
+                          .add(<String, dynamic>{user.uid: 'owner'});
                     }
                     if (!user.emailVerified) {
                       user.sendEmailVerification();
@@ -146,6 +146,7 @@ class ApplicationState extends ChangeNotifier {
 
   bool _loggedIn = false;
   bool _isAnonymous = false;
+  String _family = "";
   bool get loggedIn => _loggedIn;
   bool get isAnonymous => _isAnonymous;
 
@@ -165,6 +166,7 @@ class ApplicationState extends ChangeNotifier {
       if (user != null) {
         _loggedIn = true;
         _isAnonymous = user.isAnonymous;
+        // add family here
         _dayOfWeekSubscription = FirebaseFirestore.instance
             .collection('dayOfWeeks')
             .orderBy('day', descending: false)
