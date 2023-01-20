@@ -54,9 +54,6 @@ final _router = GoRouter(
                     }
                     if (state is UserCreated) {
                       user.updateDisplayName(user.email!.split('@')[0]);
-                      FirebaseFirestore.instance
-                          .collection('families')
-                          .add(<String, dynamic>{user.uid: 'owner'});
                     }
                     if (!user.emailVerified) {
                       user.sendEmailVerification();
@@ -149,6 +146,7 @@ class ApplicationState extends ChangeNotifier {
   String _family = "";
   bool get loggedIn => _loggedIn;
   bool get isAnonymous => _isAnonymous;
+  String get family => _family;
 
   StreamSubscription<QuerySnapshot>? _dayOfWeekSubscription;
   List<DayOfWeek> _dayOfWeeks = [];
@@ -166,9 +164,20 @@ class ApplicationState extends ChangeNotifier {
       if (user != null) {
         _loggedIn = true;
         _isAnonymous = user.isAnonymous;
-        // add family here
+        // retrieve family
+        var familyQuery = await FirebaseFirestore.instance.collection('families').where('members', arrayContains: user.uid).get();
+        var familyDoc = familyQuery.docs;
+        if(familyDoc.isEmpty) {
+          var familyReference = await FirebaseFirestore.instance
+                          .collection('families')
+                          .add(<String, dynamic>{'members': user.uid});
+          _family = familyReference.id;
+        } else {
+          _family = familyDoc.first.id;
+        }
         _dayOfWeekSubscription = FirebaseFirestore.instance
             .collection('dayOfWeeks')
+            .where('family', isEqualTo: _family)
             .orderBy('day', descending: false)
             .snapshots()
             .listen((snapshot) {
@@ -189,6 +198,7 @@ class ApplicationState extends ChangeNotifier {
         _loggedIn = false;
         _dayOfWeeks = [];
         _dayOfWeekSubscription?.cancel();
+        _family = "";
         await FirebaseAuth.instance.signInAnonymously();
       }
       notifyListeners();
