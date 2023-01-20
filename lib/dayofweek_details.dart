@@ -55,7 +55,8 @@ class _DayOfWeekDetailsPageState extends State<DayOfWeekDetailsPage> {
                             ? Timestamp.fromDate(appState.dayOfWeeks.last.day!
                                 .toDate()
                                 .add(const Duration(days: 1)))
-                            : Timestamp.now());
+                            : Timestamp.now(),
+                            family: appState.family);
                 _controllerLaunch.text = dayOfWeek.launch ?? "";
                 _controllerDinner.text = dayOfWeek.dinner ?? "";
                 return Form(

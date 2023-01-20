@@ -170,7 +170,7 @@ class ApplicationState extends ChangeNotifier {
         if(familyDoc.isEmpty) {
           var familyReference = await FirebaseFirestore.instance
                           .collection('families')
-                          .add(<String, dynamic>{'members': user.uid});
+                          .add(<String, dynamic>{'members': [user.uid]});
           _family = familyReference.id;
         } else {
           _family = familyDoc.first.id;

@@ -9,14 +9,15 @@ import 'package:menu/widgets.dart';
 import 'package:provider/provider.dart';
 
 class DayOfWeek {
-  DayOfWeek({this.itemID, required this.day, this.launch, this.dinner});
+  DayOfWeek({this.itemID, this.family, required this.day, this.launch, this.dinner});
   String? itemID;
+  String? family;
   Timestamp? day;
   String? launch;
   String? dinner;
 
   Map<String, Object?> toMap() {
-    return {"day": day, "launch": launch, "dinner": dinner};
+    return {"family": family, "day": day, "launch": launch, "dinner": dinner};
   }
 }
 
