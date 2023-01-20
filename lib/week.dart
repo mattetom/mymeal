@@ -9,7 +9,8 @@ import 'package:menu/widgets.dart';
 import 'package:provider/provider.dart';
 
 class DayOfWeek {
-  DayOfWeek({this.itemID, this.family, required this.day, this.launch, this.dinner});
+  DayOfWeek(
+      {this.itemID, this.family, required this.day, this.launch, this.dinner});
   String? itemID;
   String? family;
   Timestamp? day;
@@ -31,38 +32,15 @@ class WeekPage extends StatefulWidget {
 class _WeekState extends State<WeekPage> {
   @override
   Widget build(BuildContext context) {
-    return Consumer<ApplicationState>(
-      builder: (context, appState, child) => Scaffold(
+    return Scaffold(
+      backgroundColor: Colors.grey[800],
+      appBar: AppBar(
+        leading: const Icon(Icons.abc),
+        title: const Text('My Meal'),
         backgroundColor: Colors.grey[800],
-        appBar: AppBar(
-          leading: const Icon(Icons.abc),
-          title: const Text('My Meal'),
-          backgroundColor: Colors.grey[800],
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Menu',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.business),
-              label: 'Grocery List',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.school),
-              label: 'Settings',
-            ),
-          ],
-          currentIndex: 1,
-          selectedItemColor: Colors.white,
-          unselectedItemColor: Colors.white70,
-          backgroundColor: Colors.grey[800],
-          showSelectedLabels: true,
-          showUnselectedLabels: false,
-          //onTap: ()
-        ),
-        body: SingleChildScrollView(
+      ),
+      body: Consumer<ApplicationState>(
+        builder: (context, appState, child) => SingleChildScrollView(
           child: Column(
             children: [
               AuthFunc(
@@ -81,7 +59,7 @@ class _WeekState extends State<WeekPage> {
                   .toList(),
               StyledButton(
                   child: const Text("AGGIUNGI GIORNO"),
-                  onPressed: () => {context.push('/details/')}),
+                  onPressed: () => {context.push('/details')}),
             ],
           ),
         ),
