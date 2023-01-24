@@ -28,9 +28,9 @@ class _DayOfWeekDetailsPageState extends State<DayOfWeekDetailsPage> {
       builder: (context, appState, child) => Scaffold(
         backgroundColor: Colors.grey[800],
         appBar: AppBar(
-          leading: IconButton(
-              onPressed: () => context.pop(),
-              icon: const Icon(Icons.arrow_back_ios_new)),
+          // leading: IconButton(
+          //     onPressed: () => context.pop(),
+          //     icon: const Icon(Icons.arrow_back_ios_new)),
           title: const Text("Details"),
           backgroundColor: Colors.grey[800],
         ),
@@ -56,7 +56,7 @@ class _DayOfWeekDetailsPageState extends State<DayOfWeekDetailsPage> {
                                 .toDate()
                                 .add(const Duration(days: 1)))
                             : Timestamp.now(),
-                            family: appState.family);
+                        family: appState.family);
                 _controllerLaunch.text = dayOfWeek.launch ?? "";
                 _controllerDinner.text = dayOfWeek.dinner ?? "";
                 return Form(

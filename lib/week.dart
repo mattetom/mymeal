@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:menu/authentication.dart';
+import 'package:menu/custom_appbar.dart';
 import 'package:menu/dayofweek.dart';
 import 'package:menu/main.dart';
 import 'package:menu/widgets.dart';
@@ -34,11 +35,7 @@ class _WeekState extends State<WeekPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[800],
-      appBar: AppBar(
-        leading: const Icon(Icons.abc),
-        title: const Text('My Meal'),
-        backgroundColor: Colors.grey[800],
-      ),
+      appBar: const CustomAppBar(title: 'My Meal'),
       body: Consumer<ApplicationState>(
         builder: (context, appState, child) => SingleChildScrollView(
           child: Column(
@@ -59,7 +56,7 @@ class _WeekState extends State<WeekPage> {
                   .toList(),
               StyledButton(
                   child: const Text("AGGIUNGI GIORNO"),
-                  onPressed: () => {context.push('/details')}),
+                  onPressed: () => {context.push('/details/')}),
             ],
           ),
         ),
