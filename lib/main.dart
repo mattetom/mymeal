@@ -7,8 +7,10 @@ import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:go_router/go_router.dart';
 import 'package:menu/dayofweek_details.dart';
+import 'package:menu/family.dart';
 import 'package:menu/grocery_list.dart';
 import 'package:menu/scaffold_with_bottom_nav_bar.dart';
+import 'package:menu/widgets.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
@@ -95,6 +97,10 @@ final _router = GoRouter(
               context.pushReplacement('/');
             }),
           ],
+          children: [
+            const Text('My family'),
+            StyledButton(child: const Text("Invite member"), onPressed: () => {}),
+          ],
         );
       },
     ),
@@ -167,10 +173,10 @@ class ApplicationState extends ChangeNotifier {
 
   bool _loggedIn = false;
   bool _isAnonymous = false;
-  String _family = "";
+  Family? _family;
   bool get loggedIn => _loggedIn;
   bool get isAnonymous => _isAnonymous;
-  String get family => _family;
+  Family get family => _family!;
 
   StreamSubscription<QuerySnapshot>? _dayOfWeekSubscription;
   List<DayOfWeek> _dayOfWeeks = [];
@@ -189,6 +195,8 @@ class ApplicationState extends ChangeNotifier {
         _loggedIn = true;
         _isAnonymous = user.isAnonymous;
         // retrieve family
+        var members = FirebaseFirestore.instance.collectionGroup('members')
+              .where('uid', isEqualTo: user.uid);
         var familyQuery = await FirebaseFirestore.instance
             .collection('families')
             .where('members', arrayContains: user.uid)
@@ -200,9 +208,12 @@ class ApplicationState extends ChangeNotifier {
               .add(<String, dynamic>{
             'members': [user.uid]
           });
-          _family = familyReference.id;
+          _family = Family(id: familyReference.id);
         } else {
-          _family = familyDoc.first.id;
+          _family = Family(
+              id: familyDoc.first.id,
+              name: familyDoc.first.data()['name'],
+              members: familyDoc.first.data()['name']);
         }
         _dayOfWeekSubscription = FirebaseFirestore.instance
             .collection('dayOfWeeks')
@@ -227,7 +238,7 @@ class ApplicationState extends ChangeNotifier {
         _loggedIn = false;
         _dayOfWeeks = [];
         _dayOfWeekSubscription?.cancel();
-        _family = "";
+        _family = null;
         await FirebaseAuth.instance.signInAnonymously();
       }
       notifyListeners();
