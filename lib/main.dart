@@ -183,6 +183,17 @@ class ApplicationState extends ChangeNotifier {
   List<DayOfWeek> _dayOfWeeks = [];
   List<DayOfWeek> get dayOfWeeks => _dayOfWeeks;
 
+  final firestore = FirebaseFirestore.instance;
+
+  Future<QueryDocumentSnapshot<Map<String,dynamic>>> getFamilyId(String memberUid) async {
+    final familySnapshot = await firestore
+        .collection("families")
+        .where("members.$memberUid.uid", isEqualTo: memberUid)
+        .get();
+
+    return familySnapshot.docs.first;
+  }
+
   Future<void> init() async {
     await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform);
@@ -196,17 +207,13 @@ class ApplicationState extends ChangeNotifier {
         _loggedIn = true;
         _isAnonymous = user.isAnonymous;
         // retrieve family
-        var members = await FirebaseFirestore.instance
-            .collectionGroup('members')
-            .where('uid', isEqualTo: user.uid)
-            .get();
-        // var familyQuery = await FirebaseFirestore.instance
-        //     .collection('families')
-        //     .where('members', arrayContains: user.uid)
-        //     .get();
-        // var familyDoc = familyQuery.docs;
-        // if (familyDoc.isEmpty) {
-        if (members.docs.isEmpty) {
+        QueryDocumentSnapshot<Map<String, dynamic>> familySnapshot = await getFamilyId(user.uid);
+
+        if (familySnapshot.exists) {
+          _family = Family(
+              id: familySnapshot.id,
+              name: familySnapshot.data()['name'] as String);
+        } else {
           var familyReference = await FirebaseFirestore.instance
               .collection('families')
               .add(<String, dynamic>{'name': ''});
@@ -215,14 +222,6 @@ class ApplicationState extends ChangeNotifier {
               .doc(familyReference.path)
               .collection('member').add(<String, dynamic> {'uid':user.uid, 'email':user.email, 'invitePending':false, 'invitationDate':Timestamp.now()});
           _family = Family(id: familyReference.id);
-        } else {
-          DocumentReference subcollectionDocRef = FirebaseFirestore.instance.collection("collection1").doc("document1").collection("subcollection1").doc("document2");
-DocumentReference parentDocRef = subcollectionDocRef.parent.doc();
-
-          _family = Family(
-              id: members.docs.first.parent()
-              name: members.docs.first.reference.parent.,
-              members: familyDoc.first.data()['name']);
         }
         _dayOfWeekSubscription = FirebaseFirestore.instance
             .collection('dayOfWeeks')
