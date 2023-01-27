@@ -183,15 +183,35 @@ class ApplicationState extends ChangeNotifier {
   List<DayOfWeek> _dayOfWeeks = [];
   List<DayOfWeek> get dayOfWeeks => _dayOfWeeks;
 
-  final firestore = FirebaseFirestore.instance;
-
-  Future<QueryDocumentSnapshot<Map<String,dynamic>>> getFamilyId(String memberUid) async {
-    final familySnapshot = await firestore
+  Future<void> getFamilyByUser(User user) async {
+    final familySnapshot = await FirebaseFirestore.instance
         .collection("families")
-        .where("members.$memberUid.uid", isEqualTo: memberUid)
+        .where("members.${user.uid}.uid", isEqualTo: user.uid)
         .get();
 
-    return familySnapshot.docs.first;
+    //return familySnapshot.docs.isNotEmpty ? familySnapshot.docs.first : null;
+
+    if (familySnapshot.docs.isNotEmpty) {
+      _family = Family(
+          id: familySnapshot.docs.first.id,
+          name: familySnapshot.docs.first.data()['name'] as String);
+    } else {
+      var familyReference = await FirebaseFirestore.instance
+          .collection('families')
+          .add(<String, dynamic>{'name': ''});
+      FirebaseFirestore.instance
+          .collection('families')
+          .doc(familyReference.path)
+          .collection('member')
+          .doc(user.uid)
+          .set(<String, dynamic>{
+        'uid': user.uid,
+        'email': user.email,
+        'invitePending': false,
+        'invitationDate': Timestamp.now()
+      });
+      _family = Family(id: familyReference.id);
+    }
   }
 
   Future<void> init() async {
@@ -206,23 +226,10 @@ class ApplicationState extends ChangeNotifier {
       if (user != null) {
         _loggedIn = true;
         _isAnonymous = user.isAnonymous;
-        // retrieve family
-        QueryDocumentSnapshot<Map<String, dynamic>> familySnapshot = await getFamilyId(user.uid);
 
-        if (familySnapshot.exists) {
-          _family = Family(
-              id: familySnapshot.id,
-              name: familySnapshot.data()['name'] as String);
-        } else {
-          var familyReference = await FirebaseFirestore.instance
-              .collection('families')
-              .add(<String, dynamic>{'name': ''});
-          FirebaseFirestore.instance
-              .collection('families')
-              .doc(familyReference.path)
-              .collection('member').add(<String, dynamic> {'uid':user.uid, 'email':user.email, 'invitePending':false, 'invitationDate':Timestamp.now()});
-          _family = Family(id: familyReference.id);
-        }
+        // retrieve family
+        await getFamilyByUser(user);
+
         _dayOfWeekSubscription = FirebaseFirestore.instance
             .collection('dayOfWeeks')
             .where('family', isEqualTo: _family)
