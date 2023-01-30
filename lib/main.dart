@@ -99,6 +99,12 @@ final _router = GoRouter(
           ],
           children: [
             const Text('My family'),
+            Consumer<ApplicationState>(
+                builder: (context, appState, child) => Column(
+                    children: appState.family.members
+                            ?.map((e) => Text(e.email))
+                            .toList() ??
+                        [])),
             StyledButton(
                 child: const Text("Invite member"), onPressed: () => {}),
           ],
@@ -125,6 +131,12 @@ final _router = GoRouter(
                     itemId: state.params.containsKey('itemID')
                         ? state.params["itemID"]
                         : null);
+              },
+            ),
+            GoRoute(
+              path: 'details',
+              builder: (context, state) {
+                return const DayOfWeekDetailsPage();
               },
             ),
           ],
@@ -183,28 +195,28 @@ class ApplicationState extends ChangeNotifier {
   List<DayOfWeek> _dayOfWeeks = [];
   List<DayOfWeek> get dayOfWeeks => _dayOfWeeks;
 
-  Future<void> getFamilyByUser(User user) async {
+  Future getFamilyByUser(User user) async {
     final familySnapshot = await FirebaseFirestore.instance
-        .collection("families")
-        .where("members.${user.uid}.uid", isEqualTo: user.uid)
+        .collectionGroup("members")
+        .where("uid", isEqualTo: user.uid)
         .get();
 
     //return familySnapshot.docs.isNotEmpty ? familySnapshot.docs.first : null;
 
     if (familySnapshot.docs.isNotEmpty) {
       _family = Family(
-          id: familySnapshot.docs.first.id,
-          name: familySnapshot.docs.first.data()['name'] as String);
+          id: familySnapshot.docs.first.reference.parent.parent!.id,
+          name: (await familySnapshot.docs.first.reference.parent.parent!.get())
+              .data()!['name'] as String);
     } else {
       var familyReference = await FirebaseFirestore.instance
           .collection('families')
           .add(<String, dynamic>{'name': ''});
       FirebaseFirestore.instance
           .collection('families')
-          .doc(familyReference.path)
+          .doc(familyReference.id)
           .collection('member')
-          .doc(user.uid)
-          .set(<String, dynamic>{
+          .add(<String, dynamic>{
         'uid': user.uid,
         'email': user.email,
         'invitePending': false,
@@ -232,7 +244,7 @@ class ApplicationState extends ChangeNotifier {
 
         _dayOfWeekSubscription = FirebaseFirestore.instance
             .collection('dayOfWeeks')
-            .where('family', isEqualTo: _family)
+            .where('family', isEqualTo: _family!.id)
             .orderBy('day', descending: false)
             .snapshots()
             .listen((snapshot) {
