@@ -2,10 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:menu/applicationstate.dart';
 import 'package:menu/authentication.dart';
 import 'package:menu/custom_appbar.dart';
 import 'package:menu/dayofweek.dart';
-import 'package:menu/main.dart';
 import 'package:menu/widgets.dart';
 import 'package:provider/provider.dart';
 

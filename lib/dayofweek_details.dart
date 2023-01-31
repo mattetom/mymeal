@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:menu/main.dart';
+import 'package:menu/applicationstate.dart';
 import 'package:menu/week.dart';
 import 'package:menu/widgets.dart';
 import 'package:provider/provider.dart';
