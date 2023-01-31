@@ -204,10 +204,13 @@ class ApplicationState extends ChangeNotifier {
     //return familySnapshot.docs.isNotEmpty ? familySnapshot.docs.first : null;
 
     if (familySnapshot.docs.isNotEmpty) {
+      var membersPath = '${familySnapshot.docs.first.reference.parent.parent!.path}/members';
+      var members = (await FirebaseFirestore.instance.collection(membersPath).get()).docs.map((e) => FamilyMember(e.data()['uid'], e.data()['email'], e.data()['invitePending'], e.data()['invitationDate'])  ).toList();
       _family = Family(
           id: familySnapshot.docs.first.reference.parent.parent!.id,
           name: (await familySnapshot.docs.first.reference.parent.parent!.get())
-              .data()!['name'] as String);
+              .data()!['name'] as String,
+          members: members);
     } else {
       var familyReference = await FirebaseFirestore.instance
           .collection('families')
