@@ -218,7 +218,7 @@ class ApplicationState extends ChangeNotifier {
       FirebaseFirestore.instance
           .collection('families')
           .doc(familyReference.id)
-          .collection('member')
+          .collection('members')
           .add(<String, dynamic>{
         'uid': user.uid,
         'email': user.email,
