@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:menu/applicationstate.dart';
+import 'package:menu/widgets.dart';
 import 'package:provider/provider.dart';
 
 /// Widget for the root/initial pages in the bottom navigation bar.
@@ -14,6 +15,14 @@ class GroceryListPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Grocery List'),
       ),
+      floatingActionButton: FloatingActionButton(
+          child: const Icon(Icons.add),
+          onPressed: () {
+            FirebaseFirestore.instance
+                .collection('')
+                //'${snapshot.data?.docs.first.reference.path}/groceryListItems')
+                .add({'checked': false, 'value': ""});
+          }),
       body: FutureBuilder(
         future: FirebaseFirestore.instance
             .collection("groceryList")
@@ -44,9 +53,16 @@ class GroceryListPage extends StatelessWidget {
                         return ListTile(
                           leading: Checkbox(
                             value: groceryListItems[index]["checked"],
-                            onChanged: (bool? value) {},
+                            onChanged: (bool? value) {
+                              FirebaseFirestore.instance
+                                  .doc(groceryListItems[index].reference.path)
+                                  .set({
+                                'checked': value ?? false,
+                                'value': groceryListItems[index]["value"]
+                              });
+                            },
                           ),
-                          title: Text(groceryListItems[index]["value"]),
+                          title: Text(groceryListItems[index]["value"] ?? ""),
                         );
                       });
                 });
